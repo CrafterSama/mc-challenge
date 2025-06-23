@@ -8,12 +8,13 @@ import ProductGridHeader from "@/components/modules/products/product-grid-header
 import ProductGridHeaderActions from "@/components/modules/products/product-grid-header-actions";
 import Pagination from "@/components/ui/template/pagination";
 import { toaster } from "@/components/ui/toaster";
-import { useProducts } from "@/hooks/api/use-products";
+import { useGetProducts } from "@/hooks/api/use-products";
 import { Product } from "@/types/product";
 import { Flex } from "@chakra-ui/react";
 
 const ProductsPage = () => {
-  const { data: products } = useProducts();
+  const [search, setSearch] = useState<string>("");
+  const { data: products } = useGetProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenProductForm, setIsOpenProductForm] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(
@@ -22,7 +23,7 @@ const ProductsPage = () => {
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(products?.length / itemsPerPage);
-  const paginatedProducts: Product[] = filteredProducts?.slice(
+  const paginatedProducts: Product[] = []?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );

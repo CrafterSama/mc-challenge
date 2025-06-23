@@ -1,47 +1,47 @@
 "use client";
 
-import { LuChevronLeft } from "react-icons/lu";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 import { getSession } from "@/utils/auth-cookie";
-import { Bleed, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import UserInfo from "./user-info";
 
 const Header = () => {
-  const params = useParams();
+  const pathname = usePathname();
   const session = getSession();
 
   return (
-    <Bleed
-      bg="gray.50"
-      py={2}
+    <Flex
       px={4}
+      py={2}
       w="full"
       borderBottom={1}
       borderColor="gray.400"
       shadow="md"
     >
       <Flex
+        width="full"
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         gap="2"
       >
         <Flex direction="row" gap="4" alignItems="center">
-          {params?.id && (
-            <Link href="/users" passHref>
-              <Button
-                variant="ghost"
-                flex="row"
-                alignItems={"center"}
-                justifyContent={"center"}
-                gap={2}
-              >
-                <LuChevronLeft />
-                Volver
-              </Button>
+          <Link href="/" passHref>
+            <Flex gap="2" alignItems={"center"} justifyContent={"start"}>
+              <Image src={"/mc-logo.png"} alt="logo" width={40} height={40} />
+              <Text fontSize="sm" textAlign="left" fontWeight={"semibold"}>
+                Shopping Cart
+              </Text>
+            </Flex>
+          </Link>
+          {pathname.includes("/dashboard") && (
+            <Link href="/dashboard/products" passHref>
+              <Text fontSize="sm" textAlign="left">
+                Productos
+              </Text>
             </Link>
           )}
         </Flex>
@@ -49,8 +49,9 @@ const Header = () => {
           <Flex
             direction="row"
             gap="4"
+            justifySelf={"end"}
             alignItems="center"
-            justifyContent={"end"}
+            justifyContent={"between"}
           >
             <Link href="/login" passHref>
               <Button
@@ -63,7 +64,7 @@ const Header = () => {
                 Login
               </Button>
             </Link>
-            <Link href="/login" passHref>
+            <Link href="/signup" passHref>
               <Button
                 variant="ghost"
                 flex="row"
@@ -79,7 +80,7 @@ const Header = () => {
           <UserInfo />
         )}
       </Flex>
-    </Bleed>
+    </Flex>
   );
 };
 

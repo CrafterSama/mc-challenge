@@ -1,4 +1,7 @@
+"use client";
+
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { usePathname } from "next/navigation";
 import { LuPlus } from "react-icons/lu";
 
 type ProductGridHeaderActionsProps = {
@@ -9,6 +12,7 @@ const ProductGridHeaderActions = ({
   handleSearch,
   onCreateProduct,
 }: ProductGridHeaderActionsProps) => {
+  const pathname = usePathname();
   return (
     <Flex
       w="full"
@@ -29,26 +33,28 @@ const ProductGridHeaderActions = ({
         width={{ base: "full", md: "xs" }}
         borderRadius="lg"
       />
-      <Flex
-        direction={{
-          base: "column",
-          md: "row",
-        }}
-        justifyContent="start"
-        gap="2"
-      >
-        <Button
-          onClick={onCreateProduct}
-          variant="solid"
-          background="green.500"
-          borderRadius="lg"
+      {pathname.includes("/products") && (
+        <Flex
+          direction={{
+            base: "column",
+            md: "row",
+          }}
+          justifyContent="start"
+          gap="2"
         >
-          <Text fontSize="sm" fontWeight="semibold">
-            Nueva Frase
-          </Text>
-          <LuPlus />
-        </Button>
-      </Flex>
+          <Button
+            onClick={onCreateProduct}
+            variant="solid"
+            background="green.500"
+            borderRadius="lg"
+          >
+            <Text fontSize="sm" fontWeight="semibold">
+              Nuevo Producto
+            </Text>
+            <LuPlus />
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };

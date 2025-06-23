@@ -11,10 +11,16 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     def get_queryset(self):
-        return Product.objects.filter(name=self.request.query_params.get('name'))
-
-
+        search = self.request.query_params.get('search')
+        if search:
+            return Product.objects.filter(name=search)
+        return Product.objects.all()
 
 class OrderViewSet(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,

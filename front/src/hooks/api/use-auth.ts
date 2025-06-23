@@ -13,3 +13,13 @@ export const useAuthLogin = () => {
     },
   });
 };
+
+export const useAuthSignup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (user: LoginFormValues) => authLogin(user),
+    onSettled: () => {
+      queryClient.invalidateQueries(["login"] as any);
+    },
+  });
+};

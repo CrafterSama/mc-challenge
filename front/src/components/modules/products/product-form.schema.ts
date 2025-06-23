@@ -2,9 +2,11 @@ import * as yup from "yup";
 
 export const ProductSchema = () =>
   yup.object({
-    id: yup.string().notRequired(),
-    phrase: yup.string().required("La Frase es obligatorio"),
-    author: yup.string().required("Nombre del Autor es obligatorio"),
+    name: yup.string().required("El Nombre es obligatorio"),
+    description: yup.string().required("La Descripción es obligatorio"),
+    price: yup.number().required("El Precio es obligatorio"),
+    image_url: yup.string().required("La Imagen es obligatorio"),
+    quantity: yup.number().required("La Cantidad es obligatorio"),
   });
 
 export type ProductSchemaType = yup.InferType<ReturnType<typeof ProductSchema>>;

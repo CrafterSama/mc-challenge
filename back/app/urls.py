@@ -3,13 +3,14 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
-
 from shop.views import OrderViewSet, ProductViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register("products", ProductViewSet, basename="product")
 router.register("orders", OrderViewSet, basename="order")
 router.register("user", UserViewSet, basename="user")
+# router.register("signup", views.user_registration, basename='signup')
+
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),

@@ -1,8 +1,8 @@
-import LoginForm from "@/components/modules/auth/login-form";
+import SignupForm from "@/components/modules/auth/signup-form";
 import Card from "@/components/ui/card";
 import { Center, Stack, Text } from "@chakra-ui/react";
 
-function Login() {
+function Signup() {
   return (
     <Center height="100vh" bg="gray.100">
       <Card
@@ -13,15 +13,15 @@ function Login() {
               Shopping Cart
             </Text>
             <Text fontSize="sm" textAlign="center">
-              Login de Usuarios
+              Registro de Usuarios
             </Text>
           </Stack>
         }
       >
-        <LoginForm />
+        <SignupForm />
       </Card>
     </Center>
   );
 }
 
-export default Login;
+export default Signup;

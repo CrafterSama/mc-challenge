@@ -1,23 +1,14 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { toaster } from "@/components/ui/toaster";
-import useAppStoreContext from "@/state-management/users-app-global-state";
 import { Product as ProductFormProps } from "@/types/product";
 import { Button, Field, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { useCreateProducts } from "@/hooks/api/use-products";
 import { ProductSchema } from "./product-form.schema";
 
-const ProductForm = ({
-  onCancel,
-  updateData,
-  updatePage,
-}: {
-  onCancel: () => void;
-  updateData: (product: ProductFormProps[]) => void;
-  updatePage: (page: number) => void;
-}) => {
+const ProductForm = ({ onCancel }: { onCancel: () => void }) => {
   const {
     register,
     handleSubmit,
@@ -27,70 +18,108 @@ const ProductForm = ({
   } = useForm({
     resolver: yupResolver(ProductSchema()),
   });
-  const { products, addProduct } = useAppStoreContext();
+  const { mutate: addProduct } = useCreateProducts();
 
   const onSubmit = (data: ProductFormProps) => {
     const product = {
-      id: Math.floor(Math.random() * 1000),
-      phrase: data.phrase,
-      author: data.author,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      image_url: data.image_url,
+      quantity: data.quantity,
     };
-    addProduct(product);
-    toaster.create({
-      title: "Success",
-      description: "Frase creada exitosamente",
-      type: "success",
+    addProduct(product, {
+      onSuccess: () => {
+        toaster.create({
+          title: "Success",
+          description: "Producto creado exitosamente",
+          type: "success",
+        });
+      },
+      onError: (error: any) => {
+        toaster.create({
+          title: "Error",
+          description: error.details,
+          type: "error",
+        });
+      },
+      onSettled: () => {
+        onCancel();
+      },
     });
-    onCancel();
   };
 
-  const phraseWatched = watch("phrase");
+  const descriptionWatched = watch("name");
 
   const handleKeyUp = (value: string) => {
     if (value.length >= 71) {
-      return setValue("phrase", value.slice(0, 70));
+      return setValue("name", value.slice(0, 70));
     }
-    return setValue("phrase", value);
+    return setValue("name", value);
   };
-
-  useEffect(() => {
-    updateData(products);
-    updatePage(1);
-  }, [products]);
 
   return (
     <Flex w="full" direction="column" gap="4" mt="4">
       <form onSubmit={handleSubmit(onSubmit as any)} style={{ width: "100%" }}>
         <Stack w="full" gap="4">
-          <Field.Root invalid={!!errors.phrase}>
-            <Field.Label>Frase</Field.Label>
+          <Field.Root invalid={!!errors.name}>
+            <Field.Label>Nombre</Field.Label>
+            <Input
+              {...register("name")}
+              borderRadius="lg"
+              placeholder="Nombre"
+            />
+            <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
+          </Field.Root>
+          <Field.Root invalid={!!errors.description}>
+            <Field.Label>Descripción</Field.Label>
             <Textarea
-              {...register("phrase")}
+              {...register("description")}
               rows={4}
               onKeyUp={(e) => handleKeyUp(e.currentTarget.value)}
               borderRadius="lg"
-              placeholder="Frase"
+              placeholder="Descripción"
             />
             <Flex direction="row" justifyContent="space-between" w="full">
               <Field.ErrorText alignSelf="start" fontSize={12}>
-                {errors.phrase?.message}
+                {errors.description?.message}
               </Field.ErrorText>
               <Field.HelperText
                 color="gray.400"
                 textAlign="end"
                 justifySelf="flex-end"
                 fontSize={12}
-              >{`${phraseWatched?.length}/70 Caracteres`}</Field.HelperText>
+              >{`${descriptionWatched?.length}/70 Caracteres`}</Field.HelperText>
             </Flex>
           </Field.Root>
-          <Field.Root invalid={!!errors.author}>
-            <Field.Label>Autor</Field.Label>
+          <Field.Root invalid={!!errors.image_url}>
+            <Field.Label>URL de la Imagen</Field.Label>
             <Input
-              {...register("author")}
+              {...register("image_url")}
               borderRadius="lg"
-              placeholder="Autor"
+              placeholder="URL Imagen"
             />
-            <Field.ErrorText>{errors.author?.message}</Field.ErrorText>
+            <Field.ErrorText>{errors.image_url?.message}</Field.ErrorText>
+          </Field.Root>
+          <Field.Root invalid={!!errors.price}>
+            <Field.Label>Precio</Field.Label>
+            <Input
+              {...register("price")}
+              type="number"
+              borderRadius="lg"
+              placeholder="Precio"
+            />
+            <Field.ErrorText>{errors.price?.message}</Field.ErrorText>
+          </Field.Root>
+          <Field.Root invalid={!!errors.quantity}>
+            <Field.Label>Precio</Field.Label>
+            <Input
+              {...register("quantity")}
+              type="number"
+              borderRadius="lg"
+              placeholder="Cantidad"
+            />
+            <Field.ErrorText>{errors.quantity?.message}</Field.ErrorText>
           </Field.Root>
           <Flex
             direction="row"

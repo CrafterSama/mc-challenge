@@ -8,20 +8,16 @@ import ProductGridHeader from "@/components/modules/products/product-grid-header
 import ProductGridHeaderActions from "@/components/modules/products/product-grid-header-actions";
 import Pagination from "@/components/ui/template/pagination";
 import { toaster } from "@/components/ui/toaster";
-import { useProducts } from "@/hooks/api/use-products";
+import { useGetProducts } from "@/hooks/api/use-products";
 import { Product } from "@/types/product";
-import { getSession } from "@/utils/auth-cookie";
 import { Flex } from "@chakra-ui/react";
 
 const ProductsPage = () => {
-  const session = getSession();
-  console.log("session", session);
-  const { data: products } = useProducts();
+  const [search, setSearch] = useState<string>("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const { data: products } = useGetProducts(search);
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenProductForm, setIsOpenProductForm] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(
-    products || []
-  );
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(products?.length / itemsPerPage);

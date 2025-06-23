@@ -1,16 +1,25 @@
 import { API_URL } from "@/constants/common";
-import { LoginFormValues } from "@/types/common";
+import { LoginFormValues, SignupFormValues } from "@/types/common";
+import { api } from "@/utils/api";
 
 const authLogin = async (user: LoginFormValues) => {
-  const response = await fetch(`${API_URL}/api/token/`, {
-    method: "POST",
+  const response = await api.post(`${API_URL}/api/token/`, user, {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(user),
   });
 
-  return response.json();
+  return response;
+};
+
+const authSignup = async (user: SignupFormValues) => {
+  const response = await api.post(`${API_URL}/api/token/`, user, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response;
 };
 
 export { authLogin };

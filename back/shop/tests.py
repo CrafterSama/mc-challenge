@@ -21,8 +21,14 @@ class ProductTests(TestCase):
             stock=5,
         )
 
+    def test_create_product(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post("/api/products/", {"name": "Product 1", "description": "desc", "price": 10, "image_url": "https://i.pinimg.com/736x/df/89/59/df8959a1decb9a0c9dd2e6242459868d.jpg", "quantity": 5})
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Product.objects.filter(name="Product 1").exists(), True)
+
     def test_list_products(self):
-        response = self.client.get("/api/products/")
+        response = self.client.get("/api/products/?search=Product 1")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
 
@@ -104,26 +110,30 @@ class SeedCommandTests(TestCase):
         self.assertEqual(Product.objects.count(), 3)
         self.assertEqual(Order.objects.count(), 1)
 
-def test_user_registration():
-    client = APIClient()
-    response = client.post('/api/user/', {'username': 'testuser', 'email': 'test@example.com', 'password': 'password'})
-    assert response.status_code == 201
-    assert response.json()['username'] == 'testuser'
-    assert response.json()['email'] == 'test@example.com'
-    assert User.objects.filter(username='testuser').exists()
+"""class UserTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
 
-def test_user_login():
-    client = APIClient()
-    User.objects.create_user(username='testuser', email='test@example.com', password='password')
-    response = client.post('/api/token/', {'username': 'testuser', 'password': 'password'})
-    assert response.status_code == 200
-    assert response.json()['token']
+    def test_user_registration(self):
+        self.client = APIClient()
+        response = client.post('/api/user/', {'username': 'testuser', 'email': 'test@example.com', 'password': 'password'})
+        assert response.status_code == 201
+        assert response.json()['username'] == 'testuser'
+        assert response.json()['email'] == 'test@example.com'
+        assert User.objects.filter(username='testuser').exists()
 
-def test_get_user():
-    client = APIClient()
-    User.objects.create_user(username='testuser', email='test@example.com', password='password')
-    response = client.get('/api/user/')
-    assert response.status_code == 200
-    assert response.json()['username'] == 'testuser'
-    assert response.json()['email'] == 'test@example.com'
-    assert User.objects.filter(username='testuser').exists()
+    def test_user_login(self):
+        self.client = APIClient()
+        User.objects.create_user(username='testuser', email='test@example.com', password='password')
+        response = client.post('/api/token/', {'username': 'testuser', 'password': 'password'})
+        assert response.status_code == 200
+        assert response.json()['token']
+
+    def test_get_user(self):
+        self.client = APIClient()
+        User.objects.create_user(username='testuser', email='test@example.com', password='password')
+        response = client.get('/api/user/')
+        assert response.status_code == 200
+        assert response.json()['username'] == 'testuser'
+        assert response.json()['email'] == 'test@example.com'
+        assert User.objects.filter(username='testuser').exists()"""

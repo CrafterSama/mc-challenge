@@ -11,20 +11,14 @@ type ProductFormDialogProps = {
 const ProductFormDialog = ({
   isOpenProductForm,
   handleCloseProductForm,
-  setFilteredProducts,
-  setCurrentPage,
 }: ProductFormDialogProps) => {
   return (
     <Dialog
       open={isOpenProductForm}
       onOpenChange={() => handleCloseProductForm()}
-      title="Guardar frase"
+      title="Crear Producto"
     >
-      <ProductForm
-        onCancel={handleCloseProductForm}
-        updateData={setFilteredProducts}
-        updatePage={setCurrentPage}
-      />
+      <ProductForm onCancel={handleCloseProductForm} />
     </Dialog>
   );
 };
