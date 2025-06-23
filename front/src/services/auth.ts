@@ -22,4 +22,4 @@ const authSignup = async (user: SignupFormValues) => {
   return response;
 };
 
-export { authLogin };
+export { authLogin, authSignup };

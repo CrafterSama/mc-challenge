@@ -1,8 +1,11 @@
 import { API_URL } from "@/constants/common";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { removeSessionFromCookies } from "./auth-cookie";
 
 export class ApiClient {
   private axiosInstance: AxiosInstance;
+  private isRefreshing = false;
+  private refreshSubscribers: ((token: string) => void)[] = [];
 
   constructor() {
     this.axiosInstance = axios.create({
@@ -12,6 +15,8 @@ export class ApiClient {
       },
       withCredentials: true,
     });
+
+    this.setupResponseInterceptor();
   }
 
   private async request<T>(config: AxiosRequestConfig): Promise<T> {
@@ -21,9 +26,74 @@ export class ApiClient {
       );
       return response.data;
     } catch (error: Error | any) {
-      const status = error.status;
+      const status = error.response?.status;
       throw new Error(status);
     }
+  }
+
+  private setupResponseInterceptor(): void {
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        // Verificar si el error es 403 y no es una solicitud de refresh
+        if (error.response?.status === 403 && !originalRequest._retry) {
+          if (this.isRefreshing) {
+            // Si ya se está refrescando el token, esperar a que termine
+            return new Promise((resolve) => {
+              this.refreshSubscribers.push((token) => {
+                originalRequest.headers["Authorization"] = "Bearer " + token;
+                resolve(this.axiosInstance(originalRequest));
+              });
+            });
+          }
+
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            // Realizar el refresh del token (ajusta esta llamada según tu API)
+            const refreshResponse = await axios.post(
+              `${API_URL}/api/token/refresh/`,
+              {},
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
+            const newToken = refreshResponse.data.accessToken;
+
+            // Actualizar el token en las solicitudes futuras
+            this.axiosInstance.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newToken}`;
+
+            // Reintentar la solicitud original con el nuevo token
+            originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+
+            this.processSubscribers(newToken);
+
+            return this.axiosInstance(originalRequest);
+          } catch (refreshError) {
+            removeSessionFromCookies();
+            window.location.href = "/login";
+            return Promise.reject(refreshError);
+          } finally {
+            this.isRefreshing = false;
+          }
+        }
+
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  private processSubscribers(token: string): void {
+    this.refreshSubscribers.forEach((callback) => callback(token));
+    this.refreshSubscribers = [];
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {

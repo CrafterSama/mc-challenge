@@ -1,14 +1,22 @@
 import { Product } from "@/types/product";
 import { Box, Flex, IconButton, Stack, Text } from "@chakra-ui/react";
-import { LuTrash } from "react-icons/lu";
+import Image from "next/image";
+import { useState } from "react";
+import { LuShoppingCart } from "react-icons/lu";
 
 const ProductCard = ({
   product,
   handleOpenDeleteProduct,
 }: {
   product: Product;
-  handleOpenDeleteProduct: (product: Product) => void;
+  handleOpenDeleteProduct?: (product: Product) => void;
 }) => {
+  const [error, setError] = useState<boolean>(false);
+
+  const handleAddToShopCart = (product: Product) => {
+    console.log("product", product);
+  };
+
   return (
     <Box
       width={{
@@ -23,7 +31,7 @@ const ProductCard = ({
         xl: "230px",
       }}
       padding="1rem"
-      height="200px"
+      height="400px"
       borderRadius="lg"
       shadow="md"
       position="relative"
@@ -35,11 +43,28 @@ const ProductCard = ({
         h="full"
         className="group overflow-hidden"
       >
+        <Stack
+          className="overflow-hidden"
+          direction="column"
+          justifyContent="space-between"
+          w="full"
+          h="200px"
+          position="relative
+          "
+        >
+          <Image
+            onError={() => setError(true)}
+            src={error ? "/mc-logo.png" : product.imageUrl}
+            alt="product"
+            layout="fill"
+            objectFit="cover"
+          />
+        </Stack>
         <IconButton
           aria-label="Delete Phrase"
-          onClick={() => handleOpenDeleteProduct(product)}
+          onClick={() => handleAddToShopCart(product)}
           borderRadius="lg"
-          background="red.400"
+          background="blue.400"
           size="xs"
           width={8}
           position="absolute"
@@ -50,33 +75,16 @@ const ProductCard = ({
             opacity: 1,
           }}
         >
-          <LuTrash />
+          <LuShoppingCart />
         </IconButton>
-        <Stack
-          className="overflow-hidden"
-          direction="column"
-          justifyContent="space-between"
-          w="full"
-          h="full"
-        >
-          <Text
-            fontSize="lg"
-            fontFamily="serif"
-            fontStyle="italic"
-            fontWeight="semibold"
-            textAlign="start"
-          >
-            {product.name}
-          </Text>
-        </Stack>
-        <Text
-          fontSize="sm"
-          fontFamily="serif"
-          fontStyle="italic"
-          textAlign="end"
-          justifySelf="flex-end"
-        >
+        <Text fontSize="lg" fontWeight="semibold" textAlign="start">
+          {product.name}
+        </Text>
+        <Text fontSize="sm" textAlign="end" justifySelf="flex-end">
           {product.description}
+        </Text>
+        <Text fontSize="lg" textAlign="end" justifySelf="flex-end">
+          {`${product.price} €`}
         </Text>
       </Flex>
     </Box>

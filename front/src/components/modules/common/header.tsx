@@ -45,40 +45,48 @@ const Header = () => {
             </Link>
           )}
         </Flex>
-        {!session?.isAuthenticated ? (
-          <Flex
-            direction="row"
-            gap="4"
-            justifySelf={"end"}
-            alignItems="center"
-            justifyContent={"between"}
-          >
-            <Link href="/login" passHref>
-              <Button
-                variant="ghost"
-                flex="row"
-                alignItems={"center"}
-                justifyContent={"center"}
-                gap={2}
-              >
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup" passHref>
-              <Button
-                variant="ghost"
-                flex="row"
-                alignItems={"center"}
-                justifyContent={"center"}
-                gap={2}
-              >
-                Registro
-              </Button>
-            </Link>
-          </Flex>
-        ) : (
-          <UserInfo />
-        )}
+        <Flex
+          direction="row"
+          gap="4"
+          justifySelf={"end"}
+          alignItems="center"
+          justifyContent={"between"}
+        >
+          {!session?.isAuthenticated ? (
+            <Flex
+              direction="row"
+              gap="4"
+              justifySelf={"end"}
+              alignItems="center"
+              justifyContent={"between"}
+            >
+              <Link href="/login" passHref>
+                <Button
+                  variant="ghost"
+                  flex="row"
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  gap={2}
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link href="/signup" passHref>
+                <Button
+                  variant="ghost"
+                  flex="row"
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  gap={2}
+                >
+                  Registro
+                </Button>
+              </Link>
+            </Flex>
+          ) : (
+            <UserInfo />
+          )}
+        </Flex>
       </Flex>
     </Flex>
   );

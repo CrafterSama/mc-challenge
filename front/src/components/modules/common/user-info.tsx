@@ -23,6 +23,10 @@ const UserInfo = () => {
     });
   };
 
+  const onOpenDashboard = () => {
+    router.push("/dashboard/products");
+  };
+
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
@@ -49,6 +53,11 @@ const UserInfo = () => {
                   {session?.auth?.user?.[0]?.email}
                 </Text>
               </Flex>
+            </Menu.Item>
+            <Menu.Item value="user" onClick={onOpenDashboard}>
+              <Text fontSize="base" fontWeight="semibold">
+                Dashboard
+              </Text>
             </Menu.Item>
             <Menu.Item value="logout" onClick={onLogout}>
               <LuLogOut />

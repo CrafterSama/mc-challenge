@@ -4,55 +4,24 @@ import { AvatarIcon, Flex, For, SimpleGrid } from "@chakra-ui/react";
 
 import { EmptyState } from "@/components/ui/empty-state";
 import { Product } from "@/types/product";
-import ProductDeleteDialog from "./product-delete-dialog";
 import ProductCard from "./products-card";
 
 type ProductGridProps = {
-  paginatedProducts: Product[];
-  handleDeleteProduct: (id: number | string) => void;
+  products: Product[] | any[];
+  handleDeleteProduct?: (id: number | string) => void;
 };
 
-const ProductGrid = ({
-  paginatedProducts,
-  handleDeleteProduct,
-}: ProductGridProps) => {
+const ProductGrid = ({ products, handleDeleteProduct }: ProductGridProps) => {
   const [isOpenDeleteProduct, setIsOpenDeleteProduct] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | {}>({
-    name: "",
-    description: "",
-    image_url: "",
-    quantity: 0,
-    price: 0,
-    is_back: false,
-  });
-
-  const handleOpenDeleteProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setIsOpenDeleteProduct(true);
-  };
-
-  const handleCloseDeleteModal = () => {
-    setSelectedProduct({
-      id: "",
-      phrase: "",
-      author: "",
-    });
-    setIsOpenDeleteProduct(false);
-  };
-
-  const onHandleDeleteProduct = () => {
-    handleDeleteProduct(selectedProduct.id);
-    handleCloseDeleteModal();
-  };
 
   return (
     <>
-      <ProductDeleteDialog
+      {/*<ProductDeleteDialog
         isOpenDeleteProduct={isOpenDeleteProduct}
         setIsOpenDeleteProduct={setIsOpenDeleteProduct}
         handleCloseDeleteModal={handleCloseDeleteModal}
         onHandleDeleteProduct={onHandleDeleteProduct}
-      />
+      />*/}
       <Flex
         direction="row"
         gap="4"
@@ -68,7 +37,7 @@ const ProductGrid = ({
         shadow="sm"
         background={"white"}
       >
-        {paginatedProducts?.length >= 1 ? (
+        {products?.length >= 1 ? (
           <SimpleGrid
             columns={{ sm: 2, md: 3, lg: 4, xl: 5 }}
             gap="2rem"
@@ -76,13 +45,9 @@ const ProductGrid = ({
             justifyContent="center"
             width="full"
           >
-            <For each={paginatedProducts}>
+            <For each={products}>
               {(product: Product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  handleOpenDeleteProduct={handleOpenDeleteProduct}
-                />
+                <ProductCard key={product.id} product={product} />
               )}
             </For>
           </SimpleGrid>

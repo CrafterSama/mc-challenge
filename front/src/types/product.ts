@@ -5,22 +5,22 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  image_url: string;
+  imageUrl: string;
   quantity: number;
-  is_back?: boolean;
+  isBack?: boolean;
 }
 
 export interface ProductFormValues {
   name: string;
   description: string;
   price: number;
-  image_url: string;
+  imageUrl: string;
   quantity: number;
 }
 
 export interface Order {
   id: string | number;
   user: AuthUser;
-  created_at: string;
+  createdAt: string;
   products: Product[];
 }

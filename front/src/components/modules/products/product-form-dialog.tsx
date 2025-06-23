@@ -4,8 +4,8 @@ import Dialog from "@/components/ui/dialog";
 type ProductFormDialogProps = {
   isOpenProductForm: boolean;
   handleCloseProductForm: () => void;
-  setFilteredProducts: (products: any[]) => void;
-  setCurrentPage: (page: number) => void;
+  setFilteredProducts?: (products: any[]) => void;
+  setCurrentPage?: (page: number) => void;
 };
 
 const ProductFormDialog = ({

@@ -9,13 +9,14 @@ export const getProducts = async (search?: string) => {
     ? `${API_URL}/api/products/?search=${search}`
     : `${API_URL}/api/products/`;
 
-  const response = await api.get(urlWithParams, {
+  const data = await api.get(urlWithParams, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + session?.auth?.token,
     },
   });
-  return response;
+  console.log("response", data);
+  return data;
 };
 
 export const getProduct = async (id: string) => {
@@ -42,7 +43,7 @@ export const getProductsByAuthor = async (author: string) => {
 
 export const createProduct = async (product: any) => {
   const session = getSession();
-  const response = await api.post(`${API_URL}/api/products`, product, {
+  const response = await api.post(`${API_URL}/api/products/`, product, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + session?.auth?.token,

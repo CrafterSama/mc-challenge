@@ -6,13 +6,14 @@ import { LuPlus } from "react-icons/lu";
 
 type ProductGridHeaderActionsProps = {
   handleSearch: (value: string) => void;
-  onCreateProduct: () => void;
+  onCreateProduct?: () => void;
 };
 const ProductGridHeaderActions = ({
   handleSearch,
   onCreateProduct,
 }: ProductGridHeaderActionsProps) => {
   const pathname = usePathname();
+
   return (
     <Flex
       w="full"
@@ -28,7 +29,7 @@ const ProductGridHeaderActions = ({
       background="#fff"
     >
       <Input
-        placeholder="Buscar Frases"
+        placeholder="Buscar Productos"
         onKeyUp={(e) => handleSearch(e.currentTarget.value as string)}
         width={{ base: "full", md: "xs" }}
         borderRadius="lg"

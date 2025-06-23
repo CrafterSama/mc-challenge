@@ -39,4 +39,6 @@ const appStore = create<appStoreProps>((set: any) => ({
 
 const useAppStoreContext = () => useStore(appStore);
 
+export { appStore };
+
 export default useAppStoreContext;

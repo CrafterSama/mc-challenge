@@ -25,7 +25,7 @@ const ProductForm = ({ onCancel }: { onCancel: () => void }) => {
       name: data.name,
       description: data.description,
       price: data.price,
-      image_url: data.image_url,
+      imageUrl: data.imageUrl,
       quantity: data.quantity,
     };
     addProduct(product, {

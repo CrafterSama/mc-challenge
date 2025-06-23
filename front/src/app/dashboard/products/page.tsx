@@ -1,32 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ProductFormDialog from "@/components/modules/products/product-form-dialog";
 import ProductGrid from "@/components/modules/products/product-grid";
 import ProductGridHeader from "@/components/modules/products/product-grid-header";
 import ProductGridHeaderActions from "@/components/modules/products/product-grid-header-actions";
-import Pagination from "@/components/ui/template/pagination";
-import { toaster } from "@/components/ui/toaster";
 import { useGetProducts } from "@/hooks/api/use-products";
 import { Product } from "@/types/product";
 import { Flex } from "@chakra-ui/react";
 
 const ProductsPage = () => {
   const [search, setSearch] = useState<string>("");
-  const { data: products } = useGetProducts();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { data: products } = useGetProducts(search);
   const [isOpenProductForm, setIsOpenProductForm] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(
-    products || []
-  );
-
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(products?.length / itemsPerPage);
-  const paginatedProducts: Product[] = []?.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   const handleSearch = (value: string) => {
     //
@@ -40,20 +27,6 @@ const ProductsPage = () => {
     setIsOpenProductForm(false);
   };
 
-  const handleDeleteProduct = (id: number | string) => {
-    //deleteProduct(id);
-    setCurrentPage(1);
-    toaster.create({
-      title: "Success",
-      description: "Frase eliminada exitosamente",
-      type: "success",
-    });
-  };
-
-  useEffect(() => {
-    setFilteredProducts(products);
-  }, [products]);
-
   return (
     <Flex
       direction="column"
@@ -66,8 +39,8 @@ const ProductsPage = () => {
       <ProductFormDialog
         isOpenProductForm={isOpenProductForm}
         handleCloseProductForm={handleCloseProductForm}
-        setFilteredProducts={setFilteredProducts}
-        setCurrentPage={setCurrentPage}
+        /*setFilteredProducts={setFilteredProducts}
+        setCurrentPage={setCurrentPage}*/
       />
 
       <ProductGridHeader />
@@ -77,16 +50,13 @@ const ProductsPage = () => {
         onCreateProduct={handleCreateProduct}
       />
 
-      <ProductGrid
-        paginatedProducts={paginatedProducts || []}
-        handleDeleteProduct={handleDeleteProduct}
-      />
-      <Pagination
+      <ProductGrid products={products as Product[]} />
+      {/*<Pagination
         data={paginatedProducts || []}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
-      />
+      />*/}
     </Flex>
   );
 };
