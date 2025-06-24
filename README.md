@@ -27,7 +27,7 @@
 - **Routing**: Next.js App Router
 - **Styling**: Tailwind CSS + Shadcn UI
 
-#### **Tecnologias Integradas en Back**
+## **Tecnologias Integradas en Back**
 
 - **Django + DRF** para la api Rest
 - **Sqlite3** Para la Base de Datos pequeña
