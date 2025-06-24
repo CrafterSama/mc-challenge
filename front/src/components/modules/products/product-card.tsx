@@ -30,8 +30,10 @@ export function ProductCard({ product }: ProductCardProps) {
           src={imageError ? "/mc-logo.png" : product.imageUrl}
           alt={product.name}
           fill
-          className="object-cover transition-transform group-hover:scale-105"
-          onError={() => setImageError(true)} // TODO: handle error
+          className={`object-cover transition-transform group-hover:scale-105 ${
+            imageError && "opacity-30"
+          }`}
+          onError={() => setImageError(true)}
         />
         {product.stock <= 5 && product.stock > 0 && (
           <Badge className="absolute top-2 right-2" variant="destructive">

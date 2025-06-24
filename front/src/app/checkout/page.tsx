@@ -86,7 +86,7 @@ export default function CheckoutPage() {
         id: generateId(),
         productId: item.product.id,
         productName: item.product.name,
-        productImage: item.product.image,
+        productImage: item.product.imageUrl,
         price: item.product.price,
         quantity: item.quantity,
         subtotal: item.product.price * item.quantity,
