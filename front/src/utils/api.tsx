@@ -79,7 +79,7 @@ export class ApiClient {
             return this.axiosInstance(originalRequest);
           } catch (refreshError) {
             removeSessionFromCookies();
-            window.location.href = "/login";
+            window.location.href = "/auth/login";
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;

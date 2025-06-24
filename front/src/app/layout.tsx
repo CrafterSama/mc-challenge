@@ -1,45 +1,28 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
-import AuthDirective from "@/components/modules/auth/auth-directive";
-import Header from "@/components/modules/common/header";
 import { Toaster } from "@/components/ui/toaster";
-import ChakraProviders from "@/providers/chakra-provider";
 import ReactQueryProvider from "@/providers/react-query-provider";
+import StockMonitorProvider from "@/providers/stock-monitor-provider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Inter } from "next/font/google";
+import type React from "react";
 
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Productos y Carrito de Compras",
-  description: "Pequeño proyecto de prueba",
-};
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="es">
+      <body className={inter.className}>
         <ReactQueryProvider>
-          <AuthDirective>
-            <ChakraProviders>
-              <Toaster />
-              <Header />
-              {children}
-            </ChakraProviders>
-          </AuthDirective>
+          <StockMonitorProvider>
+            {children}
+            <Toaster />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </StockMonitorProvider>
         </ReactQueryProvider>
       </body>
     </html>

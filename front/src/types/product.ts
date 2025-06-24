@@ -6,7 +6,7 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
-  quantity: number;
+  stock: number;
   isBack?: boolean;
 }
 

@@ -12,7 +12,7 @@ export const getProducts = async (search?: string) => {
   const data = await api.get(urlWithParams, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + session?.auth?.token,
+      /*Authorization: "Bearer " + session?.auth?.token,*/
     },
   });
   console.log("response", data);

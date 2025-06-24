@@ -33,6 +33,63 @@ class Command(BaseCommand):
             image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
             stock=30,
         )
+        keyboard = Product.objects.create(
+            name="Keyboard",
+            description="Wireless keyboard",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        mouse = Product.objects.create(
+            name="Mouse",
+            description="Wireless mouse",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        monitor = Product.objects.create(
+            name="Monitor",
+            description="Wireless monitor",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        memory = Product.objects.create(
+            name="Memory",
+            description="Wireless memory",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        cpu = Product.objects.create(
+            name="CPU",
+            description="Wireless CPU",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        hdd = Product.objects.create(
+            name="HDD",
+            description="Wireless HDD",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        usb = Product.objects.create(
+            name="USB",
+            description="Wireless USB",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+        cable = Product.objects.create(
+            name="Cable",
+            description="Wireless cable",
+            price=199.99,
+            image_url="https://images.unsplash.com/photo-1512499617640-c2f999feea9c?auto=format&fit=crop&w=400&q=80",
+            stock=30,
+        )
+
 
         # Create a sample order using the products above
         user = User.objects.create_user(
